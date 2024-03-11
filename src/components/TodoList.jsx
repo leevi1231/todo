@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 
@@ -10,15 +14,16 @@ function TodoList() {
         priority: "",
         date: ""
     });
-    
+
     const [todos, setTodos] = useState([]);
 
     const [columnDefs, setColumnDefs] = useState([
-        { field: 'description', floatingFilter: true, filter: true, editable: true},
-        { field: 'priority', floatingFilter: true, filter: true, 
-        cellStyle: params => params.value === "High" ? {color: "red"} : {color: "black"}
+        { field: 'description', floatingFilter: true, filter: true, editable: true },
+        {
+            field: 'priority', floatingFilter: true, filter: true,
+            cellStyle: params => params.value === "High" ? { color: "red" } : { color: "black" }
         },
-        { field: 'date', floatingFilter: true, filter: true}
+        { field: 'date', floatingFilter: true, filter: true }
     ]);
 
     const handleClick = () => {
@@ -42,11 +47,9 @@ function TodoList() {
                 value={todo.priority}
                 onChange={e => setTodo({ ...todo, priority: e.target.value })}
             />
-            <input
-                type="date"
-                value={todo.date}
-                onChange={e => setTodo({ ...todo, date: e.target.value })}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker />
+            </LocalizationProvider>
             <button onClick={handleClick}>Add Todo</button>
 
             <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
